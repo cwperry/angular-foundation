@@ -73,7 +73,7 @@ describe('progressbar directive', function () {
     });
   });
 
-  describe('"type" attribute', function () {
+  describe('"type" attribute for progressbar', function () {
     beforeEach(inject(function() {
       $rootScope.type = 'success';
       element = $compile('<progressbar value="value" type="{{type}}"></progressbar>')($rootScope);
@@ -93,6 +93,29 @@ describe('progressbar directive', function () {
       expect(element).toHaveClass('progress');
       expect(element).not.toHaveClass('success');
       expect(element).toHaveClass('alert');
+    });
+  });
+
+  describe('"type" attribute for bar', function () {
+    beforeEach(inject(function() {
+      $rootScope.type = 'success';
+      element = $compile('<progress><bar value="value" type="{{type}}"></bar></progress>')($rootScope);
+      $rootScope.$digest();
+    }));
+
+    it('should use correct classes', function() {
+      expect(getBar(0)).toHaveClass(BAR_CLASS);
+      expect(getBar(0)).toHaveClass('success');
+    });
+
+    it('should change classes if type changed', function() {
+      $rootScope.type = 'alert';
+      $rootScope.value += 1;
+      $rootScope.$digest();
+
+      expect(getBar(0)).toHaveClass(BAR_CLASS);
+      expect(getBar(0)).not.toHaveClass('success');
+      expect(getBar(0)).toHaveClass('alert');
     });
   });
 });
